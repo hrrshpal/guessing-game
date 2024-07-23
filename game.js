@@ -6,6 +6,7 @@ const rl = readline.createInterface({
 });
 
 let secretNumber
+let numOfAttempts
 
 function checkGuess(number){
     if(number>secretNumber){
@@ -23,12 +24,18 @@ function checkGuess(number){
 function askGuess(){
     rl.question("Enter a guess: ", (guessedNumber)=>{
         guessedNumber = Number(guessedNumber)
+        numOfAttempts--
         let res = checkGuess(guessedNumber)
         if(res){
             console.log("You Win!!!")
             rl.close()
         } else {
-            askGuess()
+            if(numOfAttempts===0){
+                console.log("You Lose, LOSER")
+                rl.close()
+            } else {
+                askGuess()
+            }
         }
     })
 }
@@ -51,4 +58,12 @@ function askRange(){
     })
 }
 
-askRange()
+function askLimit(){
+    rl.question("How many attempts you want to guess? : ", (num)=>{
+        numOfAttempts = Number(num)
+        console.log(`You have ${numOfAttempts} attempts to guess the number`)
+        askRange()
+    })
+}
+
+askLimit()
